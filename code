@@ -1,0 +1,21 @@
+from pytube import YouTube
+from moviepy.editor import VideoFileClip
+
+def converter_video_para_mp3(url, output_path):
+    yt = YouTube(url)
+    video_stream = yt.streams.filter(only_audio=True).first()
+    video_stream.download(output_path)
+
+    input_path = f"{output_path}/{yt.title}.webm"
+    output_path_mp3 = f"{output_path}/{yt.title}.mp3"
+
+    video_clip = VideoFileClip(input_path)
+    video_clip.audio.write_audiofile(output_path_mp3)
+    video_clip.close()
+
+    print(f"Vídeo convertido para MP3: {yt.title}.mp3")
+
+# Exemplo de uso
+video_url = "https://www.youtube.com/watch?v=-877RlLrhJA"
+output_folder = "C:\\Users\\EkhardDev\\Music\\music"
+converter_video_para_mp3(video_url, output_folder)
